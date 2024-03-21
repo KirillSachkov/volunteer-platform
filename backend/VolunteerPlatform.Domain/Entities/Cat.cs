@@ -20,12 +20,12 @@ public class Cat : Entity<Guid>
         DateTime age,
         Gender gender,
         string description,
-        string animalAttitude,
-        string peopleAttitude,
-        bool vaccine,
-        string color,
-        string place,
-        string health,
+        string? animalAttitude,
+        string? peopleAttitude,
+        bool? vaccine,
+        string? color,
+        string? place,
+        string? health,
         IEnumerable<string> photos,
         IEnumerable<Tag> tags) : base(id)
     {
@@ -45,18 +45,29 @@ public class Cat : Entity<Guid>
     }
 
     public PhoneNumber PhoneNumber { get; }
+
     public Gender Gender { get; }
-    public DateTime Age { get; }
+
+    public Age Age { get; }
+
     public string Name { get; }
+
     public string Description { get; }
-    public string AnimalAttitude { get; }
-    public string PeopleAttitude { get; }
-    public bool Vaccine { get; }
-    public string Color { get; }
-    public string Place { get; }
-    public string Health { get; }
+
+    public string? AnimalAttitude { get; }
+
+    public string? PeopleAttitude { get; }
+
+    public bool? Vaccine { get; }
+
+    public string? Color { get; }
+
+    public string? Place { get; }
+
+    public string? Health { get; }
 
     public IReadOnlyList<Tag> Tags => _tags;
+
     public IReadOnlyList<string> Photos => _photos;
 
     public static Result<Cat, Error> Create(
@@ -66,12 +77,12 @@ public class Cat : Entity<Guid>
         DateTime age,
         Gender gender,
         string description,
-        string animalAttitude,
-        string peopleAttitude,
-        bool vaccine,
-        string color,
-        string place,
-        string health,
+        string? animalAttitude,
+        string? peopleAttitude,
+        bool? vaccine,
+        string? color,
+        string? place,
+        string? health,
         IEnumerable<Tag> tags)
     {
         if (id == Guid.Empty)
@@ -83,19 +94,19 @@ public class Cat : Entity<Guid>
         if (description.Length > MAX_DESCRIPTION_LENGTH)
             return Errors.General.InvalidLength("description");
 
-        if (animalAttitude.Length > MAX_TITLE_LENGTH)
+        if (animalAttitude?.Length > MAX_TITLE_LENGTH)
             return Errors.General.InvalidLength("animal attitude");
 
-        if (peopleAttitude.Length > MAX_TITLE_LENGTH)
+        if (peopleAttitude?.Length > MAX_TITLE_LENGTH)
             return Errors.General.InvalidLength("people attitude");
 
-        if (color.Length > MAX_TITLE_LENGTH)
+        if (color?.Length > MAX_TITLE_LENGTH)
             return Errors.General.InvalidLength("color");
 
-        if (place.Length > MAX_TITLE_LENGTH)
+        if (place?.Length > MAX_TITLE_LENGTH)
             return Errors.General.InvalidLength("place");
 
-        if (health.Length > MAX_TITLE_LENGTH)
+        if (health?.Length > MAX_TITLE_LENGTH)
             return Errors.General.InvalidLength("health");
 
         return new Cat(

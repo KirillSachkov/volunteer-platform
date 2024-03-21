@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using VolunteerPlatform.Application.Abstractions;
-using VolunteerPlatform.Application.Requests;
+using VolunteerPlatform.Application.Owners.Requests;
 using VolunteerPlatform.Domain.Common;
 using VolunteerPlatform.Domain.Entities;
 using VolunteerPlatform.Domain.Stores;
@@ -19,7 +19,7 @@ public class OwnersService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<Guid, Error>> PublishCat(CreateCatRequest request, CancellationToken ct = default)
+    public async Task<Result<Guid, Error>> PublishCat(PublishCatRequest request, CancellationToken ct = default)
     {
         var phoneNumber = PhoneNumber.Create(request.PhoneNumber).Value;
         var gender = Gender.Create(request.Gender).Value;

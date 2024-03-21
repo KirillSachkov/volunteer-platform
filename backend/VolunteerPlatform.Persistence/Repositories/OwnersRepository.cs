@@ -1,6 +1,5 @@
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
-using VolunteerPlatform.Domain;
 using VolunteerPlatform.Domain.Common;
 using VolunteerPlatform.Domain.Entities;
 using VolunteerPlatform.Domain.Stores;
@@ -10,10 +9,12 @@ namespace VolunteerPlatform.Persistence.Repositories;
 public class OwnersRepository : IOwnersRepository
 {
     private readonly ApplicationDbContext _dbContext;
+    private readonly SqlConnectionFacroty _sqlConnectionFacroty;
 
-    public OwnersRepository(ApplicationDbContext dbContext)
+    public OwnersRepository(ApplicationDbContext dbContext, SqlConnectionFacroty sqlConnectionFacroty)
     {
         _dbContext = dbContext;
+        this._sqlConnectionFacroty = sqlConnectionFacroty;
     }
 
     public void Save(Owner owner)
@@ -23,6 +24,8 @@ public class OwnersRepository : IOwnersRepository
 
     public async Task<Result<Owner, Error>> GetById(Guid id, CancellationToken ct)
     {
+        using var connection = _sqlConnectionFacroty.Create();
+
         var owner = await _dbContext.Owners
             .Include(o => o.Cats)
             .ThenInclude(c => c.Tags)

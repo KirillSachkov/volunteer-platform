@@ -1,23 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
-using VolunteerPlatform.Application;
-using VolunteerPlatform.Application.Requests;
+using VolunteerPlatform.Application.Owners.Requests;
 using VolunteerPlatform.Application.Services;
 
 namespace VolunteerPlatform.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class CatController : ControllerBase
+public class OwnersController : ControllerBase
 {
     private readonly OwnersService _ownersService;
 
-    public CatController(OwnersService ownersService)
+    public OwnersController(OwnersService ownersService)
     {
         _ownersService = ownersService;
     }
 
     [HttpPost]
-    public async Task<ActionResult> CreateCat(CreateCatRequest request, CancellationToken ct)
+    public async Task<ActionResult> CreateCat(PublishCatRequest request, CancellationToken ct)
     {
         var result = await _ownersService.PublishCat(request, ct);
 
