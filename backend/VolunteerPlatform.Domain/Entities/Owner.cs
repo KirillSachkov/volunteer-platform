@@ -11,6 +11,10 @@ public class Owner : Entity<Guid>
 
     private readonly List<Cat> _cats = [];
 
+    private Owner()
+    {
+    }
+
     private Owner(
         Guid id,
         string name,
@@ -26,18 +30,17 @@ public class Owner : Entity<Guid>
         Credentials = credentials;
     }
 
-    public string Name { get; }
-    public PhoneNumber PhoneNumber { get; }
-    public string ProfilePhoto { get; }
-    public string Description { get; }
-    public Credentials Credentials { get; }
-    
+    public string Name { get; } = string.Empty;
+    public PhoneNumber PhoneNumber { get; } = null!;
+    public string ProfilePhoto { get; } = string.Empty;
+    public string Description { get; } = string.Empty;
+    public Credentials Credentials { get; } = null!;
+
     public IReadOnlyList<Cat> Cats => _cats;
 
-    public Result PublishCat(Cat cat)
+    public void PublishCat(Cat cat)
     {
         _cats.Add(cat);
-        return Result.Success();
     }
 
     private static Result<Owner, Error> Create(

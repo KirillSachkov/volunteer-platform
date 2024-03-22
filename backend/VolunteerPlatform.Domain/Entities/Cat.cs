@@ -10,14 +10,17 @@ public class Cat : Entity<Guid>
     public const int MAX_TITLE_LENGTH = 200;
     public const int MAX_DESCRIPTION_LENGTH = 3000;
 
-    private readonly List<Tag> _tags;
-    private readonly List<string> _photos;
+    private readonly List<Tag> _tags = [];
+
+    private Cat()
+    {
+    }
 
     private Cat(
         Guid id,
         string name,
         PhoneNumber phoneNumber,
-        DateTime age,
+        Age age,
         Gender gender,
         string description,
         string? animalAttitude,
@@ -26,7 +29,6 @@ public class Cat : Entity<Guid>
         string? color,
         string? place,
         string? health,
-        IEnumerable<string> photos,
         IEnumerable<Tag> tags) : base(id)
     {
         Name = name;
@@ -41,40 +43,27 @@ public class Cat : Entity<Guid>
         Place = place;
         Health = health;
         _tags = tags.ToList();
-        _photos = photos.ToList();
     }
 
-    public PhoneNumber PhoneNumber { get; }
-
-    public Gender Gender { get; }
-
-    public Age Age { get; }
-
-    public string Name { get; }
-
-    public string Description { get; }
-
+    public PhoneNumber PhoneNumber { get; } = null!;
+    public Gender Gender { get; } = null!;
+    public Age Age { get; } = null!;
+    public string Name { get; } = string.Empty;
+    public string Description { get; } = string.Empty;
     public string? AnimalAttitude { get; }
-
     public string? PeopleAttitude { get; }
-
     public bool? Vaccine { get; }
-
     public string? Color { get; }
-
     public string? Place { get; }
-
     public string? Health { get; }
 
     public IReadOnlyList<Tag> Tags => _tags;
-
-    public IReadOnlyList<string> Photos => _photos;
 
     public static Result<Cat, Error> Create(
         Guid id,
         string name,
         PhoneNumber phoneNumber,
-        DateTime age,
+        Age age,
         Gender gender,
         string description,
         string? animalAttitude,
@@ -122,7 +111,6 @@ public class Cat : Entity<Guid>
             color,
             place,
             health,
-            [],
             tags);
     }
 }

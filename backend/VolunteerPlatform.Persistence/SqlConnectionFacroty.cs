@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Npgsql;
 using System.Data;
+using VolunteerPlatform.Application.Abstractions;
 
 namespace VolunteerPlatform.Persistence;
 

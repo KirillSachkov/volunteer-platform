@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace VolunteerPlatform.Persistence;
+namespace VolunteerPlatform.Application.Abstractions;
 
 public interface ISqlConnectionFacroty
 {

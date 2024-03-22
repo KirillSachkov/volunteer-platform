@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using VolunteerPlatform.Application.Abstractions;
 using VolunteerPlatform.Domain.Stores;
-using VolunteerPlatform.Persistence;
 using VolunteerPlatform.Persistence.Repositories;
 
-namespace VolunteerPlatform.Application;
+namespace VolunteerPlatform.Persistence;
 
 public static class DependencyRegistraction
 {
-    public static IServiceCollection AddApplication(
+    public static IServiceCollection AddPersistense(
         this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<ISqlConnectionFacroty, SqlConnectionFacroty>();
@@ -18,6 +18,7 @@ public static class DependencyRegistraction
             options.UseNpgsql(configuration.GetConnectionString(nameof(ApplicationDbContext)));
         });
 
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IOwnersRepository, OwnersRepository>();
 
         return services;

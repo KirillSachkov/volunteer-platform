@@ -4,10 +4,11 @@ using VolunteerPlatform.Domain.Entities;
 
 namespace VolunteerPlatform.Persistence.Configurations;
 
-public class CatConfiguration : IEntityTypeConfiguration<Cat>
+public class CatsConfiguration : IEntityTypeConfiguration<Cat>
 {
     public void Configure(EntityTypeBuilder<Cat> builder)
     {
+        builder.ToTable("Cats");
         builder.HasKey(c => c.Id);
         builder.HasMany(c => c.Tags).WithMany().UsingEntity("CatTags");
         builder.ComplexProperty(c => c.PhoneNumber, b =>

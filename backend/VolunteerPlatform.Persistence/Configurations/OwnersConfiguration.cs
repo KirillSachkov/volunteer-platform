@@ -4,10 +4,11 @@ using VolunteerPlatform.Domain.Entities;
 
 namespace VolunteerPlatform.Persistence.Configurations;
 
-public class OwnerConfiguration : IEntityTypeConfiguration<Owner>
+public class OwnersConfiguration : IEntityTypeConfiguration<Owner>
 {
     public void Configure(EntityTypeBuilder<Owner> builder)
     {
+        builder.ToTable("Owners");
         builder.HasKey(o => o.Id);
         builder.ComplexProperty(c => c.PhoneNumber, b =>
         {

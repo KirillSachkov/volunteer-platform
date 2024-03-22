@@ -5,9 +5,9 @@ namespace VolunteerPlatform.Domain.ValueObjects;
 
 public class Age : ValueObject
 {
-    public int Years { get; set; }
+    public int Years { get; }
 
-    public int Months { get; set; }
+    public int Months { get; }
 
     private Age(int years, int months)
     {
@@ -17,10 +17,10 @@ public class Age : ValueObject
 
     public static Result<Age, Error> Create(int years, int months)
     {
-        if (years < 0)
+        if (years <= 0)
             return Errors.General.InvalidLength("years");
 
-        if (months < 0 || months > 12)
+        if (months is <= 0 or > 12)
             return Errors.General.InvalidLength("months");
 
         return new Age(years, months);

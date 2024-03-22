@@ -7,12 +7,16 @@ public class Tag : Entity<Guid>
 {
     public const int MAX_NAME_LENGTH = 200;
 
-    public Tag(Guid id, string name) : base(id)
+    private Tag()
+    {
+    }
+
+    private Tag(Guid id, string name) : base(id)
     {
         Name = name;
     }
 
-    public string Name { get; }
+    public string Name { get; } = string.Empty;
 
     public static Result<Tag, IReadOnlyList<Error>> Create(Guid id, string name)
     {

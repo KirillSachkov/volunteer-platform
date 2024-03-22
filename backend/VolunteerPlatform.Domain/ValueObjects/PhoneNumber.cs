@@ -18,10 +18,10 @@ public class PhoneNumber : ValueObject
     public static Result<PhoneNumber, Error> Create(string input)
     {
         if (string.IsNullOrWhiteSpace(input))
-            Errors.General.ValueIsInvalid();
+            return Errors.General.ValueIsInvalid();
 
         if (Regex.IsMatch(input, phoneRegex) == false)
-            Errors.General.ValueIsInvalid();
+            return Errors.General.ValueIsInvalid();
 
         return new PhoneNumber(input);
     }

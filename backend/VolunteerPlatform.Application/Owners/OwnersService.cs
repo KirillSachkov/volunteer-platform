@@ -6,7 +6,7 @@ using VolunteerPlatform.Domain.Entities;
 using VolunteerPlatform.Domain.Stores;
 using VolunteerPlatform.Domain.ValueObjects;
 
-namespace VolunteerPlatform.Application.Services;
+namespace VolunteerPlatform.Application.Owners;
 
 public class OwnersService
 {
@@ -23,12 +23,13 @@ public class OwnersService
     {
         var phoneNumber = PhoneNumber.Create(request.PhoneNumber).Value;
         var gender = Gender.Create(request.Gender).Value;
+        var age = Age.Create(request.Years, request.Months).Value;
 
         var cat = Cat.Create(
             Guid.NewGuid(),
             request.Name,
             phoneNumber,
-            request.Age,
+            age,
             gender,
             request.Description,
             request.AnimalAttitude,
@@ -46,10 +47,7 @@ public class OwnersService
         if (owner.IsFailure)
             return owner.Error;
 
-        var publishResult = owner.Value.PublishCat(cat.Value);
-        if (publishResult.IsFailure)
-            return new Error("public.cat", publishResult.Error);
-
+        owner.Value.PublishCat(cat.Value);
         _ownersRepository.Save(owner.Value);
         await _unitOfWork.SaveChangesAsync(ct);
 

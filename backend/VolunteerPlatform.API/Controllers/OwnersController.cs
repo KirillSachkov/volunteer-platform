@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using VolunteerPlatform.Application.Owners;
 using VolunteerPlatform.Application.Owners.Requests;
-using VolunteerPlatform.Application.Services;
 
 namespace VolunteerPlatform.API.Controllers;
 
