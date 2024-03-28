@@ -12,7 +12,7 @@ public class Cat : Entity<Guid>
 
     private readonly List<Tag> _tags = [];
 
-    private Cat()
+    private Cat() 
     {
     }
 

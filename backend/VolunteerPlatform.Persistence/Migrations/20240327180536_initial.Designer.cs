@@ -13,8 +13,8 @@ using VolunteerPlatform.Persistence;
 namespace VolunteerPlatform.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240322135943_Initial")]
-    partial class Initial
+    [Migration("20240327180536_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,55 +26,69 @@ namespace VolunteerPlatform.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("CatTags", b =>
+            modelBuilder.Entity("CatTag", b =>
                 {
                     b.Property<Guid>("CatId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("cat_id");
 
                     b.Property<Guid>("TagsId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("tags_id");
 
-                    b.HasKey("CatId", "TagsId");
+                    b.HasKey("CatId", "TagsId")
+                        .HasName("pk_cat_tag");
 
-                    b.HasIndex("TagsId");
+                    b.HasIndex("TagsId")
+                        .HasDatabaseName("ix_cat_tag_tags_id");
 
-                    b.ToTable("CatTags");
+                    b.ToTable("cat_tag", (string)null);
                 });
 
             modelBuilder.Entity("VolunteerPlatform.Domain.Entities.Cat", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("AnimalAttitude")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("animal_attitude");
 
                     b.Property<string>("Color")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("color");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("description");
 
                     b.Property<string>("Health")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("health");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.Property<Guid?>("OwnerId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("owner_id");
 
                     b.Property<string>("PeopleAttitude")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("people_attitude");
 
                     b.Property<string>("Place")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("place");
 
                     b.Property<bool?>("Vaccine")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("vaccine");
 
                     b.ComplexProperty<Dictionary<string, object>>("Age", "VolunteerPlatform.Domain.Entities.Cat.Age#Age", b1 =>
                         {
@@ -82,11 +96,11 @@ namespace VolunteerPlatform.Persistence.Migrations
 
                             b1.Property<int>("Months")
                                 .HasColumnType("integer")
-                                .HasColumnName("Months");
+                                .HasColumnName("age_months");
 
                             b1.Property<int>("Years")
                                 .HasColumnType("integer")
-                                .HasColumnName("Years");
+                                .HasColumnName("age_years");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("Gender", "VolunteerPlatform.Domain.Entities.Cat.Gender#Gender", b1 =>
@@ -96,7 +110,7 @@ namespace VolunteerPlatform.Persistence.Migrations
                             b1.Property<string>("Value")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("Gender");
+                                .HasColumnName("gender_value");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("PhoneNumber", "VolunteerPlatform.Domain.Entities.Cat.PhoneNumber#PhoneNumber", b1 =>
@@ -106,31 +120,37 @@ namespace VolunteerPlatform.Persistence.Migrations
                             b1.Property<string>("Number")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("PhoneNumber");
+                                .HasColumnName("phone_number_number");
                         });
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_cat");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("OwnerId")
+                        .HasDatabaseName("ix_cat_owner_id");
 
-                    b.ToTable("Cats", (string)null);
+                    b.ToTable("cat", (string)null);
                 });
 
             modelBuilder.Entity("VolunteerPlatform.Domain.Entities.Owner", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("description");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.Property<string>("ProfilePhoto")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("profile_photo");
 
                     b.ComplexProperty<Dictionary<string, object>>("Credentials", "VolunteerPlatform.Domain.Entities.Owner.Credentials#Credentials", b1 =>
                         {
@@ -139,12 +159,12 @@ namespace VolunteerPlatform.Persistence.Migrations
                             b1.Property<string>("Login")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("Login");
+                                .HasColumnName("credentials_login");
 
                             b1.Property<string>("PasswordHash")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("PasswordHash");
+                                .HasColumnName("credentials_password_hash");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("PhoneNumber", "VolunteerPlatform.Domain.Entities.Owner.PhoneNumber#PhoneNumber", b1 =>
@@ -154,45 +174,51 @@ namespace VolunteerPlatform.Persistence.Migrations
                             b1.Property<string>("Number")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("PhoneNumber");
+                                .HasColumnName("phone_number_number");
                         });
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_owners");
 
-                    b.ToTable("Owners", (string)null);
+                    b.ToTable("owners", (string)null);
                 });
 
             modelBuilder.Entity("VolunteerPlatform.Domain.Entities.Tag", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_tag");
 
-                    b.ToTable("Tags", (string)null);
+                    b.ToTable("tag", (string)null);
                 });
 
-            modelBuilder.Entity("CatTags", b =>
+            modelBuilder.Entity("CatTag", b =>
                 {
                     b.HasOne("VolunteerPlatform.Domain.Entities.Cat", null)
                         .WithMany()
                         .HasForeignKey("CatId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_cat_tag_cat_cat_id");
 
                     b.HasOne("VolunteerPlatform.Domain.Entities.Tag", null)
                         .WithMany()
                         .HasForeignKey("TagsId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_cat_tag_tag_tags_id");
                 });
 
             modelBuilder.Entity("VolunteerPlatform.Domain.Entities.Cat", b =>
                 {
                     b.HasOne("VolunteerPlatform.Domain.Entities.Owner", null)
                         .WithMany("Cats")
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId")
+                        .HasConstraintName("fk_cat_owners_owner_id");
                 });
 
             modelBuilder.Entity("VolunteerPlatform.Domain.Entities.Owner", b =>

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VolunteerPlatform.Application.Abstractions;
 using VolunteerPlatform.Domain.Stores;
+using VolunteerPlatform.Persistence.Queries;
 using VolunteerPlatform.Persistence.Repositories;
 
 namespace VolunteerPlatform.Persistence;
@@ -20,6 +21,7 @@ public static class DependencyRegistraction
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IOwnersRepository, OwnersRepository>();
+        services.AddScoped<GetOwnersHandler>();
 
         return services;
     }

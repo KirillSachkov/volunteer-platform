@@ -1,6 +1,6 @@
-﻿namespace VolunteerPlatform.Domain.Dto;
+﻿namespace VolunteerPlatform.Contracts.Dtos;
 
-public class CatDto
+public class CatResponseDto
 {
     public Guid Id { get; set; }
     public string PhoneNumber { get; set; } = string.Empty;

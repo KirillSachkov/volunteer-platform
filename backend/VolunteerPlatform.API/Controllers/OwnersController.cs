@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using VolunteerPlatform.Application.Owners;
-using VolunteerPlatform.Application.Owners.Requests;
+using VolunteerPlatform.Application.Owners.Commands;
+using VolunteerPlatform.Persistence.Queries;
 
 namespace VolunteerPlatform.API.Controllers;
 
@@ -8,21 +8,25 @@ namespace VolunteerPlatform.API.Controllers;
 [Route("[controller]")]
 public class OwnersController : ControllerBase
 {
-    private readonly OwnersService _ownersService;
-
-    public OwnersController(OwnersService ownersService)
-    {
-        _ownersService = ownersService;
-    }
-
     [HttpPost]
-    public async Task<ActionResult> CreateCat(PublishCatRequest request, CancellationToken ct)
+    public async Task<ActionResult> PublishCat(
+        PublishCatHandler handler,
+        PublishCatCommand command,
+        CancellationToken ct = default)
     {
-        var result = await _ownersService.PublishCat(request, ct);
+        var result = await handler.Handle(command, ct);
 
         if (result.IsFailure)
             return BadRequest(result.Error);
 
         return Ok(result.Value);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult> GetAll(GetOwnersHandler handler, CancellationToken ct = default)
+    {
+        var response = await handler.Handle(ct);
+
+        return Ok(response);
     }
 }

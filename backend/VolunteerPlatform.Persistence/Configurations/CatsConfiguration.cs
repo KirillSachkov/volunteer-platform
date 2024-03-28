@@ -8,25 +8,29 @@ public class CatsConfiguration : IEntityTypeConfiguration<Cat>
 {
     public void Configure(EntityTypeBuilder<Cat> builder)
     {
-        builder.ToTable("Cats");
         builder.HasKey(c => c.Id);
-        builder.HasMany(c => c.Tags).WithMany().UsingEntity("CatTags");
+        builder.HasMany(c => c.Tags).WithMany();
+
         builder.ComplexProperty(c => c.PhoneNumber, b =>
         {
             b.IsRequired();
-            b.Property(p => p.Number).HasColumnName("PhoneNumber");
+            b.Property(p => p.Number);
         });
+
         builder.ComplexProperty(c => c.Gender, b =>
         {
             b.IsRequired();
-            b.Property(g => g.Value).HasColumnName("Gender");
+            b.Property(g => g.Value);
         });
+
         builder.ComplexProperty(c => c.Age, b =>
         {
             b.IsRequired();
-            b.Property(a => a.Years).HasColumnName("Years");
-            b.Property(a => a.Months).HasColumnName("Months");
+            b.Property(a => a.Years);
+            b.Property(a => a.Months);
         });
+
+
         builder.Property(c => c.Name).IsRequired();
         builder.Property(c => c.Description).IsRequired();
         builder.Property(c => c.AnimalAttitude).IsRequired(false);

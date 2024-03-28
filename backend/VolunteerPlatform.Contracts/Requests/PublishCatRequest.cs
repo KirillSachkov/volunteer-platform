@@ -1,7 +1,6 @@
-namespace VolunteerPlatform.Application.Owners.Requests;
+namespace VolunteerPlatform.Contracts.Requests;
 
 public record PublishCatRequest(
-    Guid OwnerId,
     string Name,
     string PhoneNumber,
     int Years,

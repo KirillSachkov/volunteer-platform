@@ -24,7 +24,7 @@ public class Gender : ValueObject
 
         var gender = input.Trim().ToUpper();
 
-        if (_all.Any(g => g.Value == gender) == false)
+        if (_all.Any(g => g.Value.ToUpper() == gender) == false)
             return Errors.General.ValueIsInvalid();
 
         return new Gender(gender);

@@ -8,20 +8,19 @@ public class OwnersConfiguration : IEntityTypeConfiguration<Owner>
 {
     public void Configure(EntityTypeBuilder<Owner> builder)
     {
-        builder.ToTable("Owners");
         builder.HasKey(o => o.Id);
         builder.ComplexProperty(c => c.PhoneNumber, b =>
         {
             b.IsRequired();
-            b.Property(p => p.Number).HasColumnName("PhoneNumber");
+            b.Property(p => p.Number);
         });
         builder.ComplexProperty(c => c.Credentials, b =>
         {
             b.IsRequired();
-            b.Property(c => c.Login).HasColumnName("Login");
-            b.Property(c => c.PasswordHash).HasColumnName("PasswordHash");
+            b.Property(c => c.Login);
+            b.Property(c => c.PasswordHash);
         });
-        builder.HasMany(o => o.Cats).WithOne().HasForeignKey("OwnerId");
+        builder.HasMany(o => o.Cats).WithOne();
         builder.Property(o => o.Name).IsRequired();
         builder.Property(o => o.Description).IsRequired(false);
         builder.Property(o => o.ProfilePhoto).IsRequired(false);

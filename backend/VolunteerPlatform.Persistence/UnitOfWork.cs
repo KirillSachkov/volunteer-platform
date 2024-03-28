@@ -1,4 +1,3 @@
-using VolunteerPlatform.Application;
 using VolunteerPlatform.Application.Abstractions;
 
 namespace VolunteerPlatform.Persistence;
