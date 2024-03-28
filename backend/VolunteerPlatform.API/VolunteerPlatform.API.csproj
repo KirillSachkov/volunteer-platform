@@ -38,4 +38,7 @@
       <ProjectReference Include="..\VolunteerPlatform.Persistence\VolunteerPlatform.Persistence.csproj" />
     </ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="VolunteerPlatform.IntegrationTests"/>
+	</ItemGroup>
 </Project>

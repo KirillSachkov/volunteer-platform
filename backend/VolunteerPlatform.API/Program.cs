@@ -1,4 +1,5 @@
 using System.Reflection;
+using Microsoft.AspNetCore.HttpLogging;
 using Serilog;
 using Serilog.Exceptions;
 using VolunteerPlatform.Application;
@@ -14,7 +15,7 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Debug()
     .WriteTo.Console()
     .WriteTo.Elasticsearch(
-        new(new Uri(configuration["ElasticConfiguration:Uri"] ?? throw new InvalidOperationException()))
+        new(new Uri(configuration["ElasticConfiguration:Uri"] ?? throw new ApplicationException()))
         {
             IndexFormat =
                 $"{Assembly.GetExecutingAssembly().GetName().Name?
@@ -29,6 +30,13 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
+builder.Services.AddHttpLogging(options =>
+{
+    options.LoggingFields = options.LoggingFields |
+                            HttpLoggingFields.RequestBody |
+                            HttpLoggingFields.ResponseBody;
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
@@ -39,6 +47,8 @@ builder.Services
 
 var app = builder.Build();
 
+app.UseHttpLogging();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -47,6 +57,8 @@ if (app.Environment.IsDevelopment())
 
 app.MapControllers();
 
-app.MapGet("/get", () => { app.Logger.LogDebug("Loggind!!!!!!!!!!!!"); });
+app.MapGet("/get", () => { app.Logger.LogDebug("Loggindg!!!!!!!!!!!!"); });
 
 app.Run();
+
+public partial class Program { }

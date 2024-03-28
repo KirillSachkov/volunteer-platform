@@ -17,7 +17,7 @@ public class OwnersRepository : IOwnersRepository
 
     public void Save(Owner owner)
     {
-        _dbContext.Owners.Attach(owner);
+        _dbContext.Owners.Attach(owner);    
     }
 
     public async Task<Result<Owner, Error>> GetById(Guid id, CancellationToken ct)

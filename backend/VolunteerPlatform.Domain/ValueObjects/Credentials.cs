@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using VolunteerPlatform.Domain.Common;
 
 namespace VolunteerPlatform.Domain.ValueObjects;
 
@@ -13,6 +14,11 @@ public class Credentials : ValueObject
     public string Login { get; }
 
     public string PasswordHash { get; }
+
+    public static Result<Credentials, Error> Create(string login, string password)
+    {
+        return new Credentials(login, password);
+    }
 
     protected override IEnumerable<IComparable> GetEqualityComponents()
     {

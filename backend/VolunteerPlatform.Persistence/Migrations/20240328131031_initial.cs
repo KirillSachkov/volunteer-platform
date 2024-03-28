@@ -19,9 +19,9 @@ namespace VolunteerPlatform.Persistence.Migrations
                     name = table.Column<string>(type: "text", nullable: false),
                     profile_photo = table.Column<string>(type: "text", nullable: true),
                     description = table.Column<string>(type: "text", nullable: true),
-                    credentials_login = table.Column<string>(type: "text", nullable: false),
-                    credentials_password_hash = table.Column<string>(type: "text", nullable: false),
-                    phone_number_number = table.Column<string>(type: "text", nullable: false)
+                    login = table.Column<string>(type: "text", nullable: false),
+                    password_hash = table.Column<string>(type: "text", nullable: false),
+                    phone_number = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,6 +44,7 @@ namespace VolunteerPlatform.Persistence.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
+                    birth_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
                     description = table.Column<string>(type: "text", nullable: false),
                     animal_attitude = table.Column<string>(type: "text", nullable: true),
@@ -53,10 +54,8 @@ namespace VolunteerPlatform.Persistence.Migrations
                     place = table.Column<string>(type: "text", nullable: true),
                     health = table.Column<string>(type: "text", nullable: true),
                     owner_id = table.Column<Guid>(type: "uuid", nullable: true),
-                    age_months = table.Column<int>(type: "integer", nullable: false),
-                    age_years = table.Column<int>(type: "integer", nullable: false),
-                    gender_value = table.Column<string>(type: "text", nullable: false),
-                    phone_number_number = table.Column<string>(type: "text", nullable: false)
+                    gender = table.Column<string>(type: "text", nullable: false),
+                    phone_number = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

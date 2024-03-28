@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VolunteerPlatform.Application.Abstractions;
@@ -22,6 +23,8 @@ public static class DependencyRegistraction
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IOwnersRepository, OwnersRepository>();
         services.AddScoped<GetOwnersHandler>();
+
+        DefaultTypeMap.MatchNamesWithUnderscores = true;
 
         return services;
     }

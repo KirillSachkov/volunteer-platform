@@ -12,13 +12,13 @@ public class OwnersConfiguration : IEntityTypeConfiguration<Owner>
         builder.ComplexProperty(c => c.PhoneNumber, b =>
         {
             b.IsRequired();
-            b.Property(p => p.Number);
+            b.Property(p => p.Number).HasColumnName("phone_number");
         });
         builder.ComplexProperty(c => c.Credentials, b =>
         {
             b.IsRequired();
-            b.Property(c => c.Login);
-            b.Property(c => c.PasswordHash);
+            b.Property(c => c.Login).HasColumnName("login");
+            b.Property(c => c.PasswordHash).HasColumnName("password_hash");
         });
         builder.HasMany(o => o.Cats).WithOne();
         builder.Property(o => o.Name).IsRequired();

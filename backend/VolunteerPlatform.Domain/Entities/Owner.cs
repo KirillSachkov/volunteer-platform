@@ -16,12 +16,11 @@ public class Owner : Entity<Guid>
     }
 
     private Owner(
-        Guid id,
         string name,
         PhoneNumber phoneNumber,
         string profilePhoto,
         string description,
-        Credentials credentials) : base(id)
+        Credentials credentials)
     {
         Name = name;
         PhoneNumber = phoneNumber;
@@ -30,11 +29,11 @@ public class Owner : Entity<Guid>
         Credentials = credentials;
     }
 
-    public string Name { get; } = string.Empty;
-    public PhoneNumber PhoneNumber { get; } = null!;
-    public string ProfilePhoto { get; } = string.Empty;
-    public string Description { get; } = string.Empty;
-    public Credentials Credentials { get; } = null!;
+    public string Name { get; }
+    public PhoneNumber PhoneNumber { get; }
+    public string ProfilePhoto { get; }
+    public string Description { get; }
+    public Credentials Credentials { get; }
 
     public IReadOnlyList<Cat> Cats => _cats;
 
@@ -43,23 +42,19 @@ public class Owner : Entity<Guid>
         _cats.Add(cat);
     }
 
-    private static Result<Owner, Error> Create(
-        Guid id,
+    public static Result<Owner, Error> Create(
         string name,
         PhoneNumber phoneNumber,
         string profilePhoto,
         string description,
         Credentials credentials)
     {
-        if (id == Guid.Empty)
-            Errors.General.ValueIsInvalid();
-
         if (string.IsNullOrWhiteSpace(name) == false || name.Length > MAX_NAME_LENGTH)
             Errors.General.InvalidLength("name");
 
         if (description.Length > MAX_DESCRIPTION_LENGTH)
             Errors.General.InvalidLength("description");
 
-        return new Owner(id, name, phoneNumber, profilePhoto, description, credentials);
+        return new Owner(name, phoneNumber, profilePhoto, description, credentials);
     }
 }

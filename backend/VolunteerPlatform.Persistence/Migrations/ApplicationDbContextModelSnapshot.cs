@@ -53,6 +53,10 @@ namespace VolunteerPlatform.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("animal_attitude");
 
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("birth_date");
+
                     b.Property<string>("Color")
                         .HasColumnType("text")
                         .HasColumnName("color");
@@ -87,19 +91,6 @@ namespace VolunteerPlatform.Persistence.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("vaccine");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Age", "VolunteerPlatform.Domain.Entities.Cat.Age#Age", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<int>("Months")
-                                .HasColumnType("integer")
-                                .HasColumnName("age_months");
-
-                            b1.Property<int>("Years")
-                                .HasColumnType("integer")
-                                .HasColumnName("age_years");
-                        });
-
                     b.ComplexProperty<Dictionary<string, object>>("Gender", "VolunteerPlatform.Domain.Entities.Cat.Gender#Gender", b1 =>
                         {
                             b1.IsRequired();
@@ -107,7 +98,7 @@ namespace VolunteerPlatform.Persistence.Migrations
                             b1.Property<string>("Value")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("gender_value");
+                                .HasColumnName("gender");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("PhoneNumber", "VolunteerPlatform.Domain.Entities.Cat.PhoneNumber#PhoneNumber", b1 =>
@@ -117,7 +108,7 @@ namespace VolunteerPlatform.Persistence.Migrations
                             b1.Property<string>("Number")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("phone_number_number");
+                                .HasColumnName("phone_number");
                         });
 
                     b.HasKey("Id")
@@ -156,12 +147,12 @@ namespace VolunteerPlatform.Persistence.Migrations
                             b1.Property<string>("Login")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("credentials_login");
+                                .HasColumnName("login");
 
                             b1.Property<string>("PasswordHash")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("credentials_password_hash");
+                                .HasColumnName("password_hash");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("PhoneNumber", "VolunteerPlatform.Domain.Entities.Owner.PhoneNumber#PhoneNumber", b1 =>
@@ -171,7 +162,7 @@ namespace VolunteerPlatform.Persistence.Migrations
                             b1.Property<string>("Number")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("phone_number_number");
+                                .HasColumnName("phone_number");
                         });
 
                     b.HasKey("Id")

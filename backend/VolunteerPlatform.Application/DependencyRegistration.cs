@@ -13,6 +13,7 @@ public static class DependencyRegistration
         services.AddFluentValidationAutoValidation();
 
         services.AddScoped<PublishCatHandler>();
+        services.AddScoped<RegisterOwnerHandler>();
         
         return services;
     }

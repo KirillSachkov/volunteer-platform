@@ -20,7 +20,7 @@ public class Cat : Entity<Guid>
         Guid id,
         string name,
         PhoneNumber phoneNumber,
-        Age age,
+        DateTime birthDate,
         Gender gender,
         string description,
         string? animalAttitude,
@@ -33,7 +33,7 @@ public class Cat : Entity<Guid>
     {
         Name = name;
         PhoneNumber = phoneNumber;
-        Age = age;
+        BirthDate = birthDate;
         Gender = gender;
         Description = description;
         AnimalAttitude = animalAttitude;
@@ -47,7 +47,7 @@ public class Cat : Entity<Guid>
 
     public PhoneNumber PhoneNumber { get; } = null!;
     public Gender Gender { get; } = null!;
-    public Age Age { get; } = null!;
+    public DateTime BirthDate { get; }
     public string Name { get; } = string.Empty;
     public string Description { get; } = string.Empty;
     public string? AnimalAttitude { get; }
@@ -60,10 +60,9 @@ public class Cat : Entity<Guid>
     public IReadOnlyList<Tag> Tags => _tags;
 
     public static Result<Cat, Error> Create(
-        Guid id,
         string name,
         PhoneNumber phoneNumber,
-        Age age,
+        DateTime birthDate,
         Gender gender,
         string description,
         string? animalAttitude,
@@ -74,9 +73,6 @@ public class Cat : Entity<Guid>
         string? health,
         IEnumerable<Tag> tags)
     {
-        if (id == Guid.Empty)
-            return Errors.General.ValueIsRequired();
-
         if (string.IsNullOrWhiteSpace(name) == false || name.Length > MAX_NAME_LENGTH)
             return Errors.General.InvalidLength("name");
 
@@ -99,10 +95,10 @@ public class Cat : Entity<Guid>
             return Errors.General.InvalidLength("health");
 
         return new Cat(
-            id,
+            Guid.NewGuid(),
             name,
             phoneNumber,
-            age,
+            birthDate,
             gender,
             description,
             animalAttitude,

@@ -13,8 +13,7 @@ public record PublishCatCommand(
     Guid OwnerId,
     string Name,
     string PhoneNumber,
-    int Years,
-    int Months,
+    DateTime BirthDate,
     string Gender,
     string Description,
     string AnimalAttitude,
@@ -36,10 +35,6 @@ public class PublishCatRequestValidator : AbstractValidator<PublishCatCommand>
         RuleFor(x => x.Gender)
             .NotEmpty()
             .MustBeValueObject(Gender.Create);
-
-        RuleFor(x => new { x.Years, x.Months })
-            .NotEmpty()
-            .MustBeValueObject(x => Age.Create(x.Years, x.Months));
     }
 }
 
@@ -58,13 +53,11 @@ public class PublishCatHandler
     {
         var phoneNumber = PhoneNumber.Create(command.PhoneNumber).Value;
         var gender = Gender.Create(command.Gender).Value;
-        var age = Age.Create(command.Years, command.Months).Value;
 
         var cat = Cat.Create(
-            Guid.NewGuid(),
             command.Name,
             phoneNumber,
-            age,
+            command.BirthDate,
             gender,
             command.Description,
             command.AnimalAttitude,
