@@ -35,7 +35,7 @@
     <ItemGroup>
       <ProjectReference Include="..\VolunteerPlatform.Application\VolunteerPlatform.Application.csproj" />
       <ProjectReference Include="..\VolunteerPlatform.Domain\VolunteerPlatform.Domain.csproj" />
-      <ProjectReference Include="..\VolunteerPlatform.Persistence\VolunteerPlatform.Persistence.csproj" />
+      <ProjectReference Include="..\VolunteerPlatform.Infrastructure\VolunteerPlatform.Infrastructure.csproj" />
     </ItemGroup>
 
 	<ItemGroup>

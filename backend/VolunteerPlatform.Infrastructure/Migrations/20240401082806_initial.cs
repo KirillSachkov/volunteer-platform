@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace VolunteerPlatform.Persistence.Migrations
+namespace VolunteerPlatform.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class initial : Migration
@@ -55,6 +55,8 @@ namespace VolunteerPlatform.Persistence.Migrations
                     health = table.Column<string>(type: "text", nullable: true),
                     owner_id = table.Column<Guid>(type: "uuid", nullable: true),
                     gender = table.Column<string>(type: "text", nullable: false),
+                    content_type = table.Column<string>(type: "text", nullable: false),
+                    path = table.Column<string>(type: "text", nullable: false),
                     phone_number = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>

@@ -1,9 +1,12 @@
 using System.Reflection;
 using Microsoft.AspNetCore.HttpLogging;
+using Minio;
+using Minio.DataModel.Args;
 using Serilog;
 using Serilog.Exceptions;
+using VolunteerPlatform.API.Extensions;
 using VolunteerPlatform.Application;
-using VolunteerPlatform.Persistence;
+using VolunteerPlatform.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -53,12 +56,26 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    //app.ApplyMigrations();
 }
 
 app.MapControllers();
 
-app.MapGet("/get", () => { app.Logger.LogDebug("Loggindg!!!!!!!!!!!!"); });
+app.MapGet("/images/presigned", async (IMinioClient minio) =>
+{
+    var args = new PresignedGetObjectArgs()
+        .WithBucket("bucket")
+        .WithObject("image.jpg")
+        .WithExpiry(86400);
+
+    var url = await minio.PresignedGetObjectAsync(args);
+
+    return Results.Ok(url);
+});
 
 app.Run();
 
-public partial class Program { }
+public partial class Program
+{
+}

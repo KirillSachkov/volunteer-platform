@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System;
+using System.Data.Common;
+using Npgsql;
+using Respawn;
 using Testcontainers.PostgreSql;
-using VolunteerPlatform.Persistence;
+using VolunteerPlatform.Infrastructure;
 
 namespace VolunteerPlatform.IntegrationTests;
 
@@ -18,6 +19,9 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
         .WithUsername("postgres")
         .WithPassword("postgres")
         .Build();
+
+    private DbConnection _dbConnection = default!;
+    private Respawner _respawner = default!;
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -37,16 +41,43 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
                     .UseNpgsql(_dbContainer.GetConnectionString())
                     .UseSnakeCaseNamingConvention();
             });
+
+            var provider = services.BuildServiceProvider();
+
+            using (var scope = provider.CreateScope())
+            {
+                using var dbContext =
+                    scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+                dbContext.Database.Migrate();
+            }
         });
     }
 
-    public Task InitializeAsync()
+    public async Task InitializeRespawner()
     {
-        return _dbContainer.StartAsync();
+        _dbConnection = new NpgsqlConnection(_dbContainer.GetConnectionString());
+        await _dbConnection.OpenAsync();
+        _respawner = await Respawner.CreateAsync(_dbConnection, new()
+        {
+            DbAdapter = DbAdapter.Postgres,
+            SchemasToInclude = ["public"]
+        });
     }
 
-    public new Task DisposeAsync()
+    public async Task ResetDatabaseAsync()
     {
-        return _dbContainer.StopAsync();
+        await _respawner.ResetAsync(_dbConnection);
+    }
+
+    public async Task InitializeAsync()
+    {
+        await _dbContainer.StartAsync();
+    }
+
+    public new async Task DisposeAsync()
+    {
+        await _dbConnection.CloseAsync();
+        await _dbContainer.StopAsync();
     }
 }

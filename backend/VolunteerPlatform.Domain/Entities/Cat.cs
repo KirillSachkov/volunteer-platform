@@ -12,7 +12,7 @@ public class Cat : Entity<Guid>
 
     private readonly List<Tag> _tags = [];
 
-    private Cat() 
+    private Cat()
     {
     }
 
@@ -29,6 +29,7 @@ public class Cat : Entity<Guid>
         string? color,
         string? place,
         string? health,
+        MainPhoto mainPhoto,
         IEnumerable<Tag> tags) : base(id)
     {
         Name = name;
@@ -42,20 +43,23 @@ public class Cat : Entity<Guid>
         Color = color;
         Place = place;
         Health = health;
+        MainPhoto = mainPhoto;
         _tags = tags.ToList();
     }
 
-    public PhoneNumber PhoneNumber { get; } = null!;
-    public Gender Gender { get; } = null!;
+    public PhoneNumber PhoneNumber { get; } = default!;
+    public Gender Gender { get; } = default!;
     public DateTime BirthDate { get; }
-    public string Name { get; } = string.Empty;
-    public string Description { get; } = string.Empty;
+    public string Name { get; } = default!;
+    public string Description { get; } = default!;
     public string? AnimalAttitude { get; }
     public string? PeopleAttitude { get; }
     public bool? Vaccine { get; }
     public string? Color { get; }
     public string? Place { get; }
     public string? Health { get; }
+
+    public MainPhoto MainPhoto { get; }
 
     public IReadOnlyList<Tag> Tags => _tags;
 
@@ -71,6 +75,7 @@ public class Cat : Entity<Guid>
         string? color,
         string? place,
         string? health,
+        MainPhoto mainMainPhoto,
         IEnumerable<Tag> tags)
     {
         if (string.IsNullOrWhiteSpace(name) == false || name.Length > MAX_NAME_LENGTH)
@@ -107,6 +112,7 @@ public class Cat : Entity<Guid>
             color,
             place,
             health,
+            mainMainPhoto,
             tags);
     }
 }

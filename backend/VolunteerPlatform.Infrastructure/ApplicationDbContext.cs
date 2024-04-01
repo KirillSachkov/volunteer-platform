@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VolunteerPlatform.Domain.Entities;
 
-namespace VolunteerPlatform.Persistence;
+namespace VolunteerPlatform.Infrastructure;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
     : DbContext(options)

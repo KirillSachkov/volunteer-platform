@@ -1,6 +1,6 @@
 using VolunteerPlatform.Application.Abstractions;
 
-namespace VolunteerPlatform.Persistence;
+namespace VolunteerPlatform.Infrastructure;
 
 public class UnitOfWork : IUnitOfWork
 {

@@ -1,25 +1,31 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using VolunteerPlatform.Persistence;
+﻿using Microsoft.Extensions.DependencyInjection;
+using VolunteerPlatform.Infrastructure;
 
 namespace VolunteerPlatform.IntegrationTests;
 
-public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppFactory>, IDisposable
+public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppFactory>, IAsyncLifetime
 {
+    private readonly IntegrationTestWebAppFactory _factory;
+
     protected readonly IServiceScope Scope;
     protected readonly ApplicationDbContext DbContext;
 
-    public BaseIntegrationTest(IntegrationTestWebAppFactory factory)
+    protected BaseIntegrationTest(IntegrationTestWebAppFactory factory)
     {
+        _factory = factory;
         Scope = factory.Services.CreateScope();
         DbContext = Scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-        DbContext.Database.EnsureCreated();
     }
 
-    public void Dispose()
+    public async Task InitializeAsync()
     {
+        await _factory.InitializeRespawner();
+    }
+
+    public async Task DisposeAsync()
+    {
+        await _factory.ResetDatabaseAsync();
+        await DbContext.DisposeAsync();
         Scope.Dispose();
-        DbContext.Dispose();
     }
 }

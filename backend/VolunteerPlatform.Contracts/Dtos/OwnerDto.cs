@@ -1,2 +1,0 @@
-﻿namespace VolunteerPlatform.Contracts.Dtos;
-

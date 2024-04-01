@@ -30,7 +30,22 @@
       - elasticsearch
     environment:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
+  minio:
+    container_name: minio
+    image: minio/minio
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      - MINIO_ACCESS_KEY=minio
+      - MINIO_SECRET_KEY=minio123
+    volumes:
+      - minio_data:/data
+    command: server --console-address ":9001" /data
+    restart: always
+
 
 volumes:
   postgres-data:
   elasticsearch_data:
+  minio_data:

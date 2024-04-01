@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using VolunteerPlatform.Application.Owners.Commands;
 
 namespace VolunteerPlatform.IntegrationTests;
@@ -29,7 +30,59 @@ public class OwnerTests : BaseIntegrationTest
 
         //Assert
         var owner = DbContext.Owners.FirstOrDefault(o => o.Id == ownerId.Value);
+        var count = DbContext.Owners.Count();
 
-        Assert.NotNull(owner);
+        count.ShouldBe(1);
+        owner.ShouldNotBeNull();
+    }
+
+    [Fact]
+    public async Task Create_ShouldAdd_NewOwnerToDb2()
+    {
+        //Arrange
+        var command = new RegisterOwnerCommand(
+            "Kirill",
+            "+79661772402",
+            "photo",
+            "description",
+            "login",
+            "password");
+
+        var handler = Scope.ServiceProvider.GetRequiredService<RegisterOwnerHandler>();
+
+        //Act
+        var ownerId = await handler.Handle(command);
+
+        //Assert
+        var owner = DbContext.Owners.FirstOrDefault(o => o.Id == ownerId.Value);
+        var count = DbContext.Owners.Count();
+
+        count.ShouldBe(1);
+        owner.ShouldNotBeNull();
+    }
+
+    [Fact]
+    public async Task Create_ShouldAdd_NewOwnerToDb3()
+    {
+        //Arrange
+        var command = new RegisterOwnerCommand(
+            "Kirill",
+            "+79661772402",
+            "photo",
+            "description",
+            "login",
+            "password");
+
+        var handler = Scope.ServiceProvider.GetRequiredService<RegisterOwnerHandler>();
+
+        //Act
+        var ownerId = await handler.Handle(command);
+
+        //Assert
+        var owner = DbContext.Owners.FirstOrDefault(o => o.Id == ownerId.Value);
+        var count = DbContext.Owners.Count();
+
+        count.ShouldBe(1);
+        owner.ShouldNotBeNull();
     }
 }

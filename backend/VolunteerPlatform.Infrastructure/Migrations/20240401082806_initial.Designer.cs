@@ -6,14 +6,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using VolunteerPlatform.Persistence;
+using VolunteerPlatform.Infrastructure;
 
 #nullable disable
 
-namespace VolunteerPlatform.Persistence.Migrations
+namespace VolunteerPlatform.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240328131031_initial")]
+    [Migration("20240401082806_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -102,6 +102,21 @@ namespace VolunteerPlatform.Persistence.Migrations
                                 .IsRequired()
                                 .HasColumnType("text")
                                 .HasColumnName("gender");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("MainPhoto", "VolunteerPlatform.Domain.Entities.Cat.MainPhoto#MainPhoto", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("ContentType")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("content_type");
+
+                            b1.Property<string>("Path")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("path");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("PhoneNumber", "VolunteerPlatform.Domain.Entities.Cat.PhoneNumber#PhoneNumber", b1 =>

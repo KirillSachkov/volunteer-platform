@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using VolunteerPlatform.Application.Owners.Commands;
-using VolunteerPlatform.Persistence.Queries;
+using VolunteerPlatform.Infrastructure.Queries;
 
 namespace VolunteerPlatform.API.Controllers;
 
@@ -32,7 +32,7 @@ public class OwnersController : ControllerBase
     [HttpPost("cat")]
     public async Task<ActionResult> PublishCat(
         PublishCatHandler handler,
-        PublishCatCommand command,
+        [FromForm] PublishCatCommand command,
         CancellationToken ct = default)
     {
         var result = await handler.Handle(command, ct);
@@ -46,8 +46,6 @@ public class OwnersController : ControllerBase
     [HttpGet]
     public async Task<ActionResult> GetAll(GetOwnersHandler handler, CancellationToken ct = default)
     {
-        _logger.LogDebug("Try to get all owners");
-
         var response = await handler.Handle();
 
         return Ok(response);

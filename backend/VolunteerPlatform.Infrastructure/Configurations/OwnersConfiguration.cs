@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using VolunteerPlatform.Domain.Entities;
 
-namespace VolunteerPlatform.Persistence.Configurations;
+namespace VolunteerPlatform.Infrastructure.Configurations;
 
 public class OwnersConfiguration : IEntityTypeConfiguration<Owner>
 {

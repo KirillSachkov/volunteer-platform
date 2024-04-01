@@ -2,12 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Minio.AspNetCore;
 using VolunteerPlatform.Application.Abstractions;
+using VolunteerPlatform.Application.Services;
 using VolunteerPlatform.Domain.Stores;
-using VolunteerPlatform.Persistence.Queries;
-using VolunteerPlatform.Persistence.Repositories;
+using VolunteerPlatform.Infrastructure.Queries;
+using VolunteerPlatform.Infrastructure.Repositories;
+using VolunteerPlatform.Infrastructure.Services;
 
-namespace VolunteerPlatform.Persistence;
+namespace VolunteerPlatform.Infrastructure;
 
 public static class DependencyRegistraction
 {
@@ -15,14 +18,25 @@ public static class DependencyRegistraction
         this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<ISqlConnectionFacroty, SqlConnectionFacroty>();
+
         services.AddDbContext<ApplicationDbContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString(nameof(ApplicationDbContext)));
         });
 
+        services.AddMinio(options =>
+        {
+            options.Endpoint = "127.0.0.1:9000";
+            options.AccessKey = "minio";
+            options.SecretKey = "minio123";
+        });
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IOwnersRepository, OwnersRepository>();
+
         services.AddScoped<GetOwnersHandler>();
+
+        services.AddScoped<IMinioService, MinioService>();
 
         DefaultTypeMap.MatchNamesWithUnderscores = true;
 

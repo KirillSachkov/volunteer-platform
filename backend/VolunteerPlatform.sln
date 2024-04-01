@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolunteerPlatform.Domain", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolunteerPlatform.Application", "VolunteerPlatform.Application\VolunteerPlatform.Application.csproj", "{F254FD1B-119F-4C74-9A28-7579DA8D4551}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolunteerPlatform.Persistence", "VolunteerPlatform.Persistence\VolunteerPlatform.Persistence.csproj", "{706B3382-4D65-4694-859B-5E3BB418F989}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolunteerPlatform.Infrastructure", "VolunteerPlatform.Infrastructure\VolunteerPlatform.Infrastructure.csproj", "{706B3382-4D65-4694-859B-5E3BB418F989}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6032BF1A-515B-4F22-9AAF-F34C94004476}"
 	ProjectSection(SolutionItems) = preProject
@@ -18,6 +18,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolunteerPlatform.IntegrationTests", "VolunteerPlatform.IntegrationTests\VolunteerPlatform.IntegrationTests.csproj", "{D9AF4C2A-ED1A-47FA-82E0-E9A56D93672E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A04C48C1-EC5B-441D-BB07-0B7566E07B5E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{850F6C2D-8EA3-48DD-B376-CD098A1CC1F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolunteerPlatform.UnitTests", "VolunteerPlatform.UnitTests\VolunteerPlatform.UnitTests.csproj", "{C12D4D41-7AEB-411E-A986-D11F7786B983}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,11 +51,23 @@ Global
 		{D9AF4C2A-ED1A-47FA-82E0-E9A56D93672E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9AF4C2A-ED1A-47FA-82E0-E9A56D93672E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9AF4C2A-ED1A-47FA-82E0-E9A56D93672E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C12D4D41-7AEB-411E-A986-D11F7786B983}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C12D4D41-7AEB-411E-A986-D11F7786B983}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C12D4D41-7AEB-411E-A986-D11F7786B983}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C12D4D41-7AEB-411E-A986-D11F7786B983}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8B40D529-1BB1-4AAD-9232-F47AC32F4929}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3DE0A596-6BBA-4033-AC54-79178A00CE3E} = {A04C48C1-EC5B-441D-BB07-0B7566E07B5E}
+		{F254FD1B-119F-4C74-9A28-7579DA8D4551} = {A04C48C1-EC5B-441D-BB07-0B7566E07B5E}
+		{DCA1AC0D-422A-48E2-8DFC-0303D377FF41} = {A04C48C1-EC5B-441D-BB07-0B7566E07B5E}
+		{706B3382-4D65-4694-859B-5E3BB418F989} = {A04C48C1-EC5B-441D-BB07-0B7566E07B5E}
+		{D9AF4C2A-ED1A-47FA-82E0-E9A56D93672E} = {850F6C2D-8EA3-48DD-B376-CD098A1CC1F0}
+		{C12D4D41-7AEB-411E-A986-D11F7786B983} = {850F6C2D-8EA3-48DD-B376-CD098A1CC1F0}
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,4 @@
-namespace VolunteerPlatform.Application.Owners.Queries;
+namespace VolunteerPlatform.Infrastructure.Models;
 
 public class OwnerReadModel
 {

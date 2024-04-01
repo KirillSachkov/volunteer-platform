@@ -3,7 +3,7 @@ using Npgsql;
 using System.Data;
 using VolunteerPlatform.Application.Abstractions;
 
-namespace VolunteerPlatform.Persistence;
+namespace VolunteerPlatform.Infrastructure;
 
 public class SqlConnectionFacroty : ISqlConnectionFacroty
 {

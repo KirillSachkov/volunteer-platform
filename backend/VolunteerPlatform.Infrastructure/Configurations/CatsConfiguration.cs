@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using VolunteerPlatform.Domain.Entities;
 
-namespace VolunteerPlatform.Persistence.Configurations;
+namespace VolunteerPlatform.Infrastructure.Configurations;
 
 public class CatsConfiguration : IEntityTypeConfiguration<Cat>
 {
@@ -10,6 +10,13 @@ public class CatsConfiguration : IEntityTypeConfiguration<Cat>
     {
         builder.HasKey(c => c.Id);
         builder.HasMany(c => c.Tags).WithMany();
+
+        builder.ComplexProperty(c => c.MainPhoto, b =>
+        {
+            b.IsRequired();
+            b.Property(p => p.Path).HasColumnName("path");
+            b.Property(p => p.ContentType).HasColumnName("content_type");
+        });
 
         builder.ComplexProperty(c => c.PhoneNumber, b =>
         {

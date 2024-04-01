@@ -4,7 +4,7 @@ using VolunteerPlatform.Domain.Common;
 using VolunteerPlatform.Domain.Entities;
 using VolunteerPlatform.Domain.Stores;
 
-namespace VolunteerPlatform.Persistence.Repositories;
+namespace VolunteerPlatform.Infrastructure.Repositories;
 
 public class OwnersRepository : IOwnersRepository
 {

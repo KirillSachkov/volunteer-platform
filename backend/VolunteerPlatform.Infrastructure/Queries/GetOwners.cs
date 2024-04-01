@@ -2,7 +2,7 @@
 using VolunteerPlatform.Application.Abstractions;
 using VolunteerPlatform.Application.Owners.Queries;
 
-namespace VolunteerPlatform.Persistence.Queries;
+namespace VolunteerPlatform.Infrastructure.Queries;
 
 public class GetOwnersHandler
 {
@@ -20,7 +20,7 @@ public class GetOwnersHandler
         const string sql =
             """
             SELECT id, name, phone_number, profile_photo, o.description
-            FROM Owners o
+            FROM owners o
             """;
 
         var owners = await connection.QueryAsync<OwnerDto>(sql);

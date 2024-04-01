@@ -1,6 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using VolunteerPlatform.Application.Abstractions;
+using VolunteerPlatform.Application.Services;
 using VolunteerPlatform.Application.Utils;
 using VolunteerPlatform.Domain.Common;
 using VolunteerPlatform.Domain.Entities;
@@ -22,6 +24,7 @@ public record PublishCatCommand(
     string Color,
     string Place,
     string Health,
+    IFormFile MainPhoto,
     IEnumerable<string> Tags);
 
 public class PublishCatRequestValidator : AbstractValidator<PublishCatCommand>
@@ -41,16 +44,30 @@ public class PublishCatRequestValidator : AbstractValidator<PublishCatCommand>
 public class PublishCatHandler
 {
     private readonly IOwnersRepository _ownersRepository;
+    private readonly IMinioService _minioService;
     private readonly IUnitOfWork _unitOfWork;
 
-    public PublishCatHandler(IOwnersRepository ownersRepository, IUnitOfWork unitOfWork)
+    public PublishCatHandler(
+        IOwnersRepository ownersRepository,
+        IMinioService minioService,
+        IUnitOfWork unitOfWork)
     {
         _ownersRepository = ownersRepository;
+        _minioService = minioService;
         _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<Guid, Error>> Handle(PublishCatCommand command, CancellationToken ct = default)
     {
+        var contentType = command.MainPhoto.ContentType;
+        var extension = Path.GetExtension(command.MainPhoto.FileName);
+        var mainPhoto = MainPhoto.Create(extension, contentType).Value;
+
+        await using (var stream = command.MainPhoto.OpenReadStream())
+        {
+            await _minioService.UploadImage(stream, mainPhoto, ct);
+        }
+
         var phoneNumber = PhoneNumber.Create(command.PhoneNumber).Value;
         var gender = Gender.Create(command.Gender).Value;
 
@@ -66,6 +83,7 @@ public class PublishCatHandler
             command.Color,
             command.Place,
             command.Health,
+            mainPhoto,
             []);
 
         if (cat.IsFailure)
