@@ -31,12 +31,15 @@ public static class DependencyRegistraction
             options.SecretKey = "minio123";
         });
 
+        services.AddMemoryCache();
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IOwnersRepository, OwnersRepository>();
 
         services.AddScoped<GetOwnersHandler>();
 
         services.AddScoped<IMinioService, MinioService>();
+        services.AddScoped<ICacheService, CacheService>();
 
         DefaultTypeMap.MatchNamesWithUnderscores = true;
 

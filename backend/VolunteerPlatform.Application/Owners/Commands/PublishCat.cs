@@ -2,6 +2,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using VolunteerPlatform.Application.Abstractions;
+using VolunteerPlatform.Application.Abstractions.Messaging;
 using VolunteerPlatform.Application.Services;
 using VolunteerPlatform.Application.Utils;
 using VolunteerPlatform.Domain.Common;
@@ -25,7 +26,7 @@ public record PublishCatCommand(
     string Place,
     string Health,
     IFormFile MainPhoto,
-    IEnumerable<string> Tags);
+    IEnumerable<string> Tags) : ICommand;
 
 public class PublishCatRequestValidator : AbstractValidator<PublishCatCommand>
 {
@@ -41,7 +42,7 @@ public class PublishCatRequestValidator : AbstractValidator<PublishCatCommand>
     }
 }
 
-public class PublishCatHandler
+public class PublishCatHandler : ICommandHandler<PublishCatCommand>
 {
     private readonly IOwnersRepository _ownersRepository;
     private readonly IMinioService _minioService;
@@ -57,16 +58,11 @@ public class PublishCatHandler
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<Guid, Error>> Handle(PublishCatCommand command, CancellationToken ct = default)
+    public async Task<Result> Handle(PublishCatCommand command, CancellationToken ct = default)
     {
         var contentType = command.MainPhoto.ContentType;
         var extension = Path.GetExtension(command.MainPhoto.FileName);
         var mainPhoto = MainPhoto.Create(extension, contentType).Value;
-
-        await using (var stream = command.MainPhoto.OpenReadStream())
-        {
-            await _minioService.UploadImage(stream, mainPhoto, ct);
-        }
 
         var phoneNumber = PhoneNumber.Create(command.PhoneNumber).Value;
         var gender = Gender.Create(command.Gender).Value;
@@ -87,16 +83,16 @@ public class PublishCatHandler
             []);
 
         if (cat.IsFailure)
-            return cat.Error;
+            return Result.Failure("");
 
         var owner = await _ownersRepository.GetById(command.OwnerId, ct);
         if (owner.IsFailure)
-            return owner.Error;
+            return Result.Failure("");
 
         owner.Value.PublishCat(cat.Value);
         _ownersRepository.Save(owner.Value);
         await _unitOfWork.SaveChangesAsync(ct);
-
-        return owner.Value.Id;
+        
+        return Result.Success();
     }
 }

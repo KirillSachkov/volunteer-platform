@@ -11,7 +11,7 @@ using VolunteerPlatform.Infrastructure;
 
 namespace VolunteerPlatform.IntegrationTests;
 
-public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
+public class IntegrationTestWebAppFactory : WebApplicationFactory<API.Program>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres")

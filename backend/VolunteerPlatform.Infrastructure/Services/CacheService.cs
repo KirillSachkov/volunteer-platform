@@ -1,8 +1,9 @@
 using Microsoft.Extensions.Caching.Memory;
+using VolunteerPlatform.Application.Services;
 
 namespace VolunteerPlatform.Infrastructure.Services;
 
-public class CacheService
+public class CacheService : ICacheService
 {
     private readonly IMemoryCache _cache;
 
@@ -11,7 +12,7 @@ public class CacheService
         _cache = cache;
     }
 
-    public async Task<T> GetOrCreateAsync<T>(
+    public async Task<T> GetOrCreate<T>(
         string cacheKey,
         Func<Task<T>> factory,
         CancellationToken ct) where T : class

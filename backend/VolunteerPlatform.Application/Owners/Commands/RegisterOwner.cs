@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
 using VolunteerPlatform.Application.Abstractions;
+using VolunteerPlatform.Application.Abstractions.Messaging;
 using VolunteerPlatform.Domain.Common;
 using VolunteerPlatform.Domain.Entities;
 using VolunteerPlatform.Domain.Stores;
@@ -14,7 +15,7 @@ public record RegisterOwnerCommand(
         string ProfilePhoto,
         string Description,
         string Login,
-        string Password);
+        string Password) : ILoggingCommand;
 
 public class RegisterOwnerCommandValidator : AbstractValidator<PublishCatCommand>
 {
@@ -23,7 +24,7 @@ public class RegisterOwnerCommandValidator : AbstractValidator<PublishCatCommand
     }
 }
 
-public class RegisterOwnerHandler
+public class RegisterOwnerHandler : ICommandHandler<RegisterOwnerCommand>
 {
     private readonly IOwnersRepository _ownersRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -34,7 +35,7 @@ public class RegisterOwnerHandler
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<Guid, Error>> Handle(RegisterOwnerCommand command, CancellationToken ct = default)
+    public async Task<Result> Handle(RegisterOwnerCommand command, CancellationToken ct = default)
     {
         var phoneNumber = PhoneNumber.Create(command.PhoneNumber).Value;
         var credentials = Credentials.Create(command.Login, command.Password).Value;
@@ -47,11 +48,11 @@ public class RegisterOwnerHandler
             credentials);
 
         if (owner.IsFailure)
-            return owner.Error;
+            return Result.Failure("");
 
         _ownersRepository.Save(owner.Value);
         await _unitOfWork.SaveChangesAsync(ct);
-
-        return owner.Value.Id;
+        
+        return Result.Success();
     }
 }

@@ -4,7 +4,6 @@ using Minio;
 using Minio.DataModel.Args;
 using Serilog;
 using Serilog.Exceptions;
-using VolunteerPlatform.API.Extensions;
 using VolunteerPlatform.Application;
 using VolunteerPlatform.Infrastructure;
 
@@ -76,6 +75,9 @@ app.MapGet("/images/presigned", async (IMinioClient minio) =>
 
 app.Run();
 
-public partial class Program
+namespace VolunteerPlatform.API
 {
+    public partial class Program
+    {
+    }
 }

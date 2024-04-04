@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using VolunteerPlatform.Application.Abstractions.Messaging;
 using VolunteerPlatform.Application.Owners.Commands;
+using VolunteerPlatform.Application.Services;
 using VolunteerPlatform.Infrastructure.Queries;
 
 namespace VolunteerPlatform.API.Controllers;
@@ -9,24 +11,27 @@ namespace VolunteerPlatform.API.Controllers;
 public class OwnersController : ControllerBase
 {
     private readonly ILogger<OwnersController> _logger;
+    private readonly ICacheService _cacheService;
+    private readonly IDispatcher _dispatcher;
 
-    public OwnersController(ILogger<OwnersController> logger)
+    public OwnersController(ILogger<OwnersController> logger, ICacheService cacheService, IDispatcher dispatcher)
     {
         _logger = logger;
+        _cacheService = cacheService;
+        _dispatcher = dispatcher;
     }
 
     [HttpPost]
     public async Task<ActionResult> RegisterOwner(
-        RegisterOwnerHandler handler,
         RegisterOwnerCommand command,
         CancellationToken ct = default)
     {
-        var result = await handler.Handle(command, ct);
+        var result = await _dispatcher.Dispatch(command, ct);
 
         if (result.IsFailure)
             return BadRequest(result.Error);
 
-        return Ok(result.Value);
+        return Ok();
     }
 
     [HttpPost("cat")]
@@ -40,13 +45,16 @@ public class OwnersController : ControllerBase
         if (result.IsFailure)
             return BadRequest(result.Error);
 
-        return Ok(result.Value);
+        return Ok();
     }
 
     [HttpGet]
     public async Task<ActionResult> GetAll(GetOwnersHandler handler, CancellationToken ct = default)
     {
-        var response = await handler.Handle();
+        var response = await _cacheService.GetOrCreate(
+            "AllOwners",
+            async () => await handler.Handle(),
+            ct);
 
         return Ok(response);
     }
